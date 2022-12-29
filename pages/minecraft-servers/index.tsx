@@ -11,8 +11,6 @@ import minecount, { ServerDTO } from "../../lib/minecount";
 export const getServerSideProps = async (context) => {
   const page = Number(context.query?.page) || 1;
 
-  console.log("page #: " + page);
-
   const count = await servers.countApproved();
   const approvedServers = await servers.findApproved(page);
   const serverDtos: ServerDTO[] = approvedServers.map((s) => minecount.map(s));

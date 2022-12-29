@@ -1,7 +1,6 @@
 import { Alert, Snackbar } from "@mui/material";
 
 const Toast = ({ variant, message, open, handleClose }) => {
-  console.log("open: " + open);
   const onClose = (event, reason) => {
     if (reason === "clickaway") {
       return;
@@ -10,7 +9,6 @@ const Toast = ({ variant, message, open, handleClose }) => {
     handleClose();
   };
 
-  console.log(open);
   return (
     <Snackbar
       open={open}
