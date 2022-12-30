@@ -3,7 +3,7 @@ import * as pg from "pg";
 
 export class Servers {
   private CLIENT = new pg.Client({ ssl: true });
-  private PAGE_SIZE = 15;
+  private PAGE_SIZE = 10;
 
   constructor() {
     this.CLIENT.connect();
@@ -48,6 +48,29 @@ export class Servers {
       `SELECT * FROM servers WHERE approved = true ORDER BY player_count DESC LIMIT ${
         this.PAGE_SIZE
       } OFFSET ${(page - 1) * this.PAGE_SIZE}`
+    );
+
+    return rows;
+  }
+
+  public async countApprovedWithName(name: string): Promise<number> {
+    const { rows } = await this.CLIENT.query(
+      `SELECT COUNT(*) AS count FROM servers WHERE approved = true AND LOWER(name) LIKE $1`,
+      [`%${name}%`]
+    );
+
+    return rows[0].count;
+  }
+
+  public async findApprovedWithName(
+    name: string,
+    page: number
+  ): Promise<Server[]> {
+    const { rows } = await this.CLIENT.query(
+      `SELECT * FROM servers WHERE approved = true AND LOWER(name) LIKE $1 ORDER BY player_count DESC LIMIT ${
+        this.PAGE_SIZE
+      } OFFSET ${(page - 1) * this.PAGE_SIZE}`,
+      [`%${name}%`]
     );
 
     return rows;

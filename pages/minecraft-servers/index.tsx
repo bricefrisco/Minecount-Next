@@ -1,7 +1,7 @@
 import { Button, TextField, Tooltip } from "@mui/material";
 import { Box } from "@mui/system";
 import PageWrapper from "../../components/PageWrapper";
-import TopPagination from "../../components/TopPagination";
+import TopPagination from "../../components/Pagination.tsx";
 import Server from "../../components/Server";
 import Link from "next/link";
 import BottomPagination from "../../components/BottomPagination";

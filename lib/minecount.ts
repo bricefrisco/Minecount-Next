@@ -2,7 +2,7 @@ import servers, { Server } from "./servers";
 import { JavaStatusResponse, status } from "minecraft-server-util";
 
 export type ServerDTO = {
-  id: number;
+  id?: number;
   ip: string;
   name?: string;
   favicon: string;
@@ -15,7 +15,7 @@ export type ServerDTO = {
   notes?: string;
   website?: string;
   discord?: string;
-  createdDate: number;
+  createdDate?: number;
 };
 
 export type PingResponse = {
@@ -25,6 +25,36 @@ export type PingResponse = {
 };
 
 class Minecount {
+  private validIpAddressRegex =
+    /^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5]).){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])$/;
+
+  private validHostnameRegex =
+    /^[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b(?:[-a-zA-Z0-9()@:%_\+.~#?&//=]*)$/;
+
+  public isIpAddress(text: string) {
+    return this.validIpAddressRegex.test(text);
+  }
+
+  public isHostname(text: string) {
+    return this.validHostnameRegex.test(text);
+  }
+
+  public mapPing(ip: string, ping: JavaStatusResponse): ServerDTO | null {
+    if (!ping) {
+      return null;
+    }
+
+    return {
+      ip: ip,
+      favicon: ping.favicon,
+      motd: ping.motd.html,
+      versionName: ping.version.name,
+      versionProtocol: ping.version.protocol,
+      playerCount: ping.players.online,
+      maxPlayers: ping.players.max,
+    };
+  }
+
   public map(server: Server): ServerDTO | null {
     if (!server) {
       return null;

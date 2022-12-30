@@ -1,36 +1,21 @@
-import { Box } from "@mui/system";
-import NavigationDrawer from "./NavigationDrawer";
-import { styled } from "@mui/material/styles";
-import PageHeader from "./PageHeader";
-import PageDescription from "./PageDescription";
-
-const Container = styled(Box)(() => ({
-  display: "flex",
-}));
-
-const ContentContainer = styled(Box)(({ theme }) => ({
-  padding: theme.spacing(4),
-  margin: "auto",
-  width: "100%",
-  maxWidth: 1000,
-}));
+import Navigation from "./Navigation";
 
 type Props = {
   title: string;
-  description?: string;
+  subtitle: string;
   children: any;
 };
 
-const PageWrapper = ({ title, description, children }: Props) => {
+const PageWrapper = ({ title, subtitle, children }: Props) => {
   return (
-    <Container>
-      <NavigationDrawer />
-      <ContentContainer>
-        <PageHeader>{title}</PageHeader>
-        <PageDescription>{description}</PageDescription>
+    <>
+      <Navigation />
+      <div className="container mx-auto mt-7 pt-7">
+        <h1 className="text-5xl font-bold">{title}</h1>
+        <h2 className="pt-1 text-2xl font-light">{subtitle}</h2>
         {children}
-      </ContentContainer>
-    </Container>
+      </div>
+    </>
   );
 };
 
